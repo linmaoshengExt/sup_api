@@ -1,0 +1,62 @@
+    .wrap {
+        width: 100%;
+        margin: 100px auto;
+    }     
+    
+    * {
+        padding: 0;
+        margin: 0;
+    }
+       
+    
+    .clearfixExt:after {
+        position: relative;
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        visibility: hidden;
+        clear: both;
+    }
+     
+    .photo-ul-product {
+        width: 30%;
+        margin: 0 auto;
+    }
+     
+     .photo-li-product {
+        list-style: none;
+        float: left;
+        width: 330px;
+        /*三列图片排列*/
+        height: 350px;
+        /*当图片尺寸不一的时候，需要设置一个最大高度*/
+        text-align: center;
+        /*内容居中*/
+        overflow: hidden;
+        /*超出隐藏*/
+    }
+     
+    .photo-img {
+        position: relative;
+        width: 100%;
+        top: 50%;/*li高度的一般*/
+        transform: translateY(-50%); /*再向上移动自身的50%*/
+    }
+    
+    img.double-border {
+
+        border: 3px solid 	#DCDCDC;
+
+        padding: 3px;
+
+        background: #fff;
+}
+    .main-border {
+
+        border: 3px solid 	#FF0000;
+
+        padding: 3px;
+
+        background: #fff;
+}

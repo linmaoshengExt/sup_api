@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="web.dao.SupGoodsColourDao" >
+  <resultMap id="BaseResultMap" type="web.model.SupGoodsColour" >
+    <id column="colour_id" property="colourId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="colour_img" property="colourImg" jdbcType="VARCHAR" />
+    <result column="colour_name" property="colourName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    colour_id, goods_id, colour_img, colour_name, status, create_time, update_time
+  </sql>
+  
+  
+   <resultMap id="colourList" type="web.model.SupGoodsColour" >
+   <id column="colour_id" property="colourId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="colour_img" property="colourImg" jdbcType="VARCHAR" />
+    <result column="colour_name" property="colourName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <select id="selectByGoodsId" parameterType="java.lang.String" resultMap="colourList">  
+       SELECT colour_id,colour_img ,colour_name from  sup_goods_colour s   WHERE s.status=1 and  s.goods_id=#{id} 
+   </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sup_goods_colour
+    where colour_id = #{colourId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sup_goods_colour
+    where colour_id = #{colourId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="web.model.SupGoodsColour" >
+    insert into sup_goods_colour (colour_id, goods_id, colour_img, 
+      colour_name, status, create_time, 
+      update_time)
+    values (#{colourId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{colourImg,jdbcType=VARCHAR}, 
+      #{colourName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="web.model.SupGoodsColour" >
+    insert into sup_goods_colour
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="colourId != null" >
+        colour_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="colourImg != null" >
+        colour_img,
+      </if>
+      <if test="colourName != null" >
+        colour_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="colourId != null" >
+        #{colourId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="colourImg != null" >
+        #{colourImg,jdbcType=VARCHAR},
+      </if>
+      <if test="colourName != null" >
+        #{colourName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="web.model.SupGoodsColour" >
+    update sup_goods_colour
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="colourImg != null" >
+        colour_img = #{colourImg,jdbcType=VARCHAR},
+      </if>
+      <if test="colourName != null" >
+        colour_name = #{colourName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where colour_id = #{colourId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="web.model.SupGoodsColour" >
+    update sup_goods_colour
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
+      colour_img = #{colourImg,jdbcType=VARCHAR},
+      colour_name = #{colourName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where colour_id = #{colourId,jdbcType=VARCHAR}
+  </update>
+</mapper>

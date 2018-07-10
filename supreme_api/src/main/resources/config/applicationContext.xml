@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    <!-- 导入数据库配置信息 -->
+    <context:property-placeholder location="classpath:config/JDBC.properties" />
+    <!-- 扫描service,dao层 -->
+    <context:component-scan
+            base-package="web"/>
+    <!-- 配置c3p0连接池 -->
+    <!-- toy.manage数据源-->
+    <bean id="manage" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driverClassName}"/>
+        <property name="jdbcUrl"
+                  value="${manager_url}"/>
+        <property name="user" value="${manager_username}"/>
+        <property name="password" value="${manager_password}"/>
+    </bean>
+
+
+    <!-- sessionFactory -->
+    <!-- sup.manage数据源-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- dataSource -->
+        <property name="dataSource" ref="manage"/>
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:web/mapping/*.xml"></property>
+    </bean>
+
+    <!-- 事务 -->
+    <!-- 声明注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="manage"/>
+    </bean>
+
+    <!-- 注入mapper -->
+    <bean id="msc" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定要扫描到包 -->
+        <property name="basePackage" value="web.dao"/>
+        <!-- sqlSessionFactory,使用sqlSessionFactoryBeanName属性注入 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--&lt;!&ndash; 启动对@AspectJ注解的支持 &ndash;&gt;-->
+    <!--<aop:aspectj-autoproxy/>-->
+    <!--<bean id="operateLogAspect" class="cn.toysuperman.operator.utils.OperateLogAspect"></bean>-->
+</beans>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+    <!--通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller-->
+    <!--<aop:aspectj-autoproxy proxy-target-class="true" />-->
+
+    <!-- 创建bean对象，springmvc只扫描controller -->
+    <context:component-scan base-package="web.controller"/>
+    <!-- 静态资源的处理，交tomcat处理 -->
+    <mvc:default-servlet-handler/>
+
+
+
+	<!--解决json数据中文乱码
+	<mvc:annotation-driven>
+		&lt;!&ndash; 自定义消息转换器 &ndash;&gt;
+		<mvc:message-converters register-defaults="true">
+			&lt;!&ndash; 自定义消息转换器，设置编码为utf-8，防止responseEntity<String>转换成json对象输出乱码 &ndash;&gt;
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg index="0" value="utf-8"></constructor-arg>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>-->
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:annotation-driven >
+        <!-- 消息转换器 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <mvc:resources location="/resources/" mapping="/resources/**" />
+
+     <!--解决json数据中文乱码-->
+    <mvc:annotation-driven>
+        <!-- 自定义消息转换器 -->
+        <mvc:message-converters register-defaults="true">
+            <!-- 自定义消息转换器，设置编码为utf-8，防止responseEntity<String>转换成json对象输出乱码 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg index="0" value="utf-8"></constructor-arg>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+<!--     配置拦截器
+	<mvc:interceptors>
+		<mvc:interceptor>
+		<mvc:mapping path="/**" />
+		<bean class="web.constants.CatInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
+</beans>

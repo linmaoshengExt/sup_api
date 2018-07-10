@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="web.dao.SupGoodsDao" >
+  <resultMap id="BaseResultMap" type="web.model.SupGoods" >
+    <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_prices" property="goodsPrices" jdbcType="BIGINT" />
+    <result column="colour_id" property="colourId" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="size_id" property="sizeId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="goods_picture" property="goodsPicture" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+     	<association property="category" javaType="web.model.SupCategory">  
+            <id column="category_id" property="categoryId"/>  
+            <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+		    <result column="status" property="status" jdbcType="INTEGER" />
+		    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        </association> 
+  </resultMap>
+  
+  
+	 <!-- <resultMap id="goodsEntry" type="web.model.SupGoods" >
+	    <result column="size_id" property="sizeId" jdbcType="VARCHAR" />
+	    <result column="size_name" property="sizeName" jdbcType="VARCHAR" />
+	  </resultMap> -->
+  
+   <resultMap id="goodsEntry" type="web.model.SupGoods" >
+	     <id column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    	<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    	<result column="goods_prices" property="goodsPrices" jdbcType="BIGINT" />
+    	<result column="goods_picture" property="goodsPicture" jdbcType="VARCHAR" />
+    	<result column="content" property="content" jdbcType="VARCHAR" />
+    	<result column="type" property="type" jdbcType="INTEGER" />
+   </resultMap>
+   
+    <select id="goodsById" parameterType="java.lang.String" resultMap="goodsEntry">  
+       SELECT goods_id,goods_name,goods_prices,goods_picture ,content,g.type from  sup_goods g where g.goods_id=#{id}  limit 1
+   </select>
+   
+  
+   <select id="goodsDetails" parameterType="java.lang.String" resultMap="BaseResultMap">  
+       SELECT g.*,s.* from  sup_goods g ,sup_size s   WHERE g.goods_id=s.goods_id and g.goods_id=#{id} 
+   </select>
+
+  <select id="selectByCategory" resultMap="BaseResultMap">  
+       select g.goods_id , g.goods_name , goods_prices,goods_Picture ,g.type  from sup_goods g  where g.category_id=#{id} and g.status=1
+   </select> 
+  
+    <select id="goods" resultMap="BaseResultMap">  
+       select g.goods_id , g.goods_name , g.goods_prices,goods_Picture ,g.status ,g.type from sup_goods g where g.status=1 
+   
+   </select>
+  
+   <select id="selectGoodsFetchCategory" resultMap="BaseResultMap">  
+        select c.*,g.* from sup_category c,sup_goods g where g.category_id=c.category_id and g.goods_id=#{id}   
+    </select>
+    
+  <sql id="Base_Column_List" >
+    goods_id, goods_name, goods_prices, colour_id, category_id, size_id, status, goods_picture, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sup_goods
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sup_goods
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="web.model.SupGoods" >
+    insert into sup_goods (goods_id, goods_name, goods_prices, 
+      colour_id, category_id, size_id, 
+      status, goods_picture, create_time, 
+      update_time)
+    values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsPrices,jdbcType=BIGINT}, 
+      #{colourId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{sizeId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{goodsPicture,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="web.model.SupGoods" >
+    insert into sup_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsPrices != null" >
+        goods_prices,
+      </if>
+      <if test="colourId != null" >
+        colour_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="sizeId != null" >
+        size_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="goodsPicture != null" >
+        goods_picture,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrices != null" >
+        #{goodsPrices,jdbcType=BIGINT},
+      </if>
+      <if test="colourId != null" >
+        #{colourId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="sizeId != null" >
+        #{sizeId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="goodsPicture != null" >
+        #{goodsPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="web.model.SupGoods" >
+    update sup_goods
+    <set >
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrices != null" >
+        goods_prices = #{goodsPrices,jdbcType=BIGINT},
+      </if>
+      <if test="colourId != null" >
+        colour_id = #{colourId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="sizeId != null" >
+        size_id = #{sizeId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="goodsPicture != null" >
+        goods_picture = #{goodsPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="web.model.SupGoods" >
+    update sup_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_prices = #{goodsPrices,jdbcType=BIGINT},
+      colour_id = #{colourId,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR},
+      size_id = #{sizeId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      goods_picture = #{goodsPicture,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where goods_id = #{goodsId,jdbcType=VARCHAR}
+  </update>
+</mapper>
