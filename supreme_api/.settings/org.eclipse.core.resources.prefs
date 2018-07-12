@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/java/web/controller=UTF-8
+encoding//src/main/java/web/service/serviceImpl=UTF-8
+encoding//src/main/java/web/service/serviceImpl/SupGoodsServiceImpl.java=UTF-8
 encoding//src/main/java/web/utils/DateUtil.java=UTF-8
