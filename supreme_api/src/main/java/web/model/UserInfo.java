@@ -20,6 +20,10 @@ public class UserInfo implements Serializable {
 
     private String suite;
 
+    private String phone;
+
+    private String address;
+
     private String city;
 
     private String ip;
@@ -55,13 +59,12 @@ public class UserInfo implements Serializable {
     }
 
     public String getFirstName() {
-		return firstName;
-	}
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
+    public void setFirstName(String firstName) {
+        this.firstName = firstName == null ? null : firstName.trim();
+    }
 
     public String getLastName() {
         return lastName;
@@ -85,6 +88,22 @@ public class UserInfo implements Serializable {
 
     public void setSuite(String suite) {
         this.suite = suite == null ? null : suite.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
     public String getCity() {

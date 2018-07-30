@@ -9,27 +9,23 @@
     <result column="last_name" property="lastName" jdbcType="VARCHAR" />
     <result column="country" property="country" jdbcType="VARCHAR" />
     <result column="suite" property="suite" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="ip" property="ip" jdbcType="VARCHAR" />
     <result column="post_code" property="postCode" jdbcType="VARCHAR" />
     <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <select id="selectByEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    id
-    from user_info
-    where email = #{email,jdbcType=VARCHAR}
-  </select>
+  <sql id="Base_Column_List" >
+    id, phone_number, email, first_name, last_name, country, suite, phone, address, city, 
+    ip, post_code, creat_time, update_time
+  </sql>
   
   <select id="selectNums" resultType="java.lang.Integer"  parameterType="java.lang.String">  
     select count(*) from user_info  where email = #{email,jdbcType=VARCHAR}
   </select>  
   
-  <sql id="Base_Column_List" >
-    id, phone_number, email, first_name, last_name, country, suite, city, ip, post_code, 
-    creat_time, update_time
-  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -43,11 +39,13 @@
   <insert id="insert" parameterType="web.model.UserInfo" >
     insert into user_info (id, phone_number, email, 
       first_name, last_name, country, 
-      suite, city, ip, post_code, 
+      suite, phone, address, 
+      city, ip, post_code, 
       creat_time, update_time)
     values (#{id,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
-      #{suite,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, 
+      #{suite,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, 
       #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="web.model.UserInfo" >
@@ -73,6 +71,12 @@
       </if>
       <if test="suite != null" >
         suite,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="address != null" >
+        address,
       </if>
       <if test="city != null" >
         city,
@@ -112,6 +116,12 @@
       <if test="suite != null" >
         #{suite,jdbcType=VARCHAR},
       </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
       </if>
@@ -150,6 +160,12 @@
       <if test="suite != null" >
         suite = #{suite,jdbcType=VARCHAR},
       </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
       <if test="city != null" >
         city = #{city,jdbcType=VARCHAR},
       </if>
@@ -176,6 +192,8 @@
       last_name = #{lastName,jdbcType=VARCHAR},
       country = #{country,jdbcType=VARCHAR},
       suite = #{suite,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},
       post_code = #{postCode,jdbcType=VARCHAR},
